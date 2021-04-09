@@ -1,8 +1,11 @@
+import sys
 from py4j.java_gateway import get_field
 
 class testAI1(object):
     def __init__(self, gateway):
         self.gateway = gateway
+
+        #init Actions
         self.actions = ""
 
         # Using readlines()
@@ -14,9 +17,19 @@ class testAI1(object):
             fout.writelines(data[1:])
 
         print(self.actions)
+
+        #init hit counts
+        self.hitCounts = []
+        self.max = 0
         
     def close(self):
-        pass
+        # writing to file
+        print(self.hitCounts)
+        # file2 = open("Outputs\\hits.txt", 'w')
+        # file2.write(self.hitCounts)
+        # file2.close()
+        # print("Done")
+
         
     def getInformation(self, frameData, isControl):
         # Getting the frame data of the current frame
@@ -59,7 +72,20 @@ class testAI1(object):
                 return
             
         self.inputKey.empty()
-        self.cc.skillCancel()     
+        self.cc.skillCancel()
+
+        #get combo
+        hit = self.frameData.getCharacter(self.player).getHitCount()
+        #print(hit)
+
+        #Record hits to output
+        if hit > self.max:
+            self.max = hit
+        elif (hit < self.max) and hit == 0:
+            print(self.max)
+            self.hitCounts.append(self.max)
+
+            self.max = 0
 
         #Action List
         if len(self.actions) > 0:
