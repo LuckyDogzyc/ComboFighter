@@ -3,6 +3,17 @@ from py4j.java_gateway import get_field
 class testAI1(object):
     def __init__(self, gateway):
         self.gateway = gateway
+        self.actions = ""
+
+        # Using readlines()
+        with open("Inputs\\actions.txt") as fin:
+            data = fin.read().splitlines(True)
+            self.actions = data[0]
+
+        with open("Inputs\\actions.txt", 'w') as fout:
+            fout.writelines(data[1:])
+
+        print(self.actions)
         
     def close(self):
         pass
@@ -50,8 +61,14 @@ class testAI1(object):
         self.inputKey.empty()
         self.cc.skillCancel()     
 
-        # Just spam kick
-        self.cc.commandCall("B")
+        #Action List
+        if len(self.actions) > 0:
+            #print(self.actions[0])
+            self.cc.commandCall(self.actions[0])
+            self.actions = self.actions[1:]
+
+
+
                         
     # This part is mandatory
     class Java:

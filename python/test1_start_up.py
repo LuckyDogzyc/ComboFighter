@@ -12,10 +12,22 @@ def check_args(args):
 			GAME_NUM = int(args[i+1])
 
 def start_game():
+
+
+	actionList1 = "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRAAAAAAAAAAAAAAAAABBU\n"
+	actionList2 = "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLBBBBBBBBBBBBBBBBBAAAAD\n"
+
+	# writing to file
+	file1 = open("Inputs\\actions.txt", 'w')
+	file1.writelines(actionList1)
+	file1.writelines(actionList2)
+	file1.close()
+
 	manager.registerAI("testAI1", testAI1(gateway))
 	manager.registerAI("IdleAI", IdleAI(gateway))
 	print("Start game")
-	
+
+
 	game = manager.createGame("ZEN", "ZEN", "testAI1", "IdleAI", GAME_NUM)
 	manager.runGame(game)
 	
