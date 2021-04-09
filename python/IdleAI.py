@@ -1,15 +1,27 @@
+import sys
 from py4j.java_gateway import get_field
 
 class IdleAI(object):
     def __init__(self, gateway):
         self.gateway = gateway
+
+        self.records = []
         
     def close(self):
-        pass
+        #Record the stuns
+        #print(self.records)
+
+        original_stdout = sys.stdout  # Save a reference to the original standard output
+
+        with open('Outputs\\records.txt', 'w') as f:
+            sys.stdout = f  # Change the standard output to the file we created.
+            print(str(self.records))
+            sys.stdout = original_stdout  # Reset the standard output to its original value
         
     def getInformation(self, frameData, isControl):
         # Getting the frame data of the current frame
         self.frameData = frameData
+        self.isControl = isControl
         self.cc.setFrameData(self.frameData, self.player)
     # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
@@ -46,6 +58,13 @@ class IdleAI(object):
         if self.cc.getSkillFlag():
                 self.inputKey = self.cc.getSkillKey()
                 return
+
+        if not self.isControl:
+            #print(1)
+            self.records.append("1")
+        else:
+            self.records.append(0)
+
             
         self.inputKey.empty()
         self.cc.skillCancel()     

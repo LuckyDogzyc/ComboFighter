@@ -16,7 +16,7 @@ class testAI1(object):
         with open("Inputs\\actions.txt", 'w') as fout:
             fout.writelines(data[1:])
 
-        print(self.actions)
+        #print(self.actions)
 
         #init hit counts
         self.hitCounts = []
@@ -24,11 +24,15 @@ class testAI1(object):
         
     def close(self):
         # writing to file
-        print(self.hitCounts)
-        # file2 = open("Outputs\\hits.txt", 'w')
-        # file2.write(self.hitCounts)
-        # file2.close()
-        # print("Done")
+        #print("hit count: ", self.hitCounts)
+        #
+        # original_stdout = sys.stdout  # Save a reference to the original standard output
+        #
+        # with open('Outputs\\hits.txt', 'w') as f:
+        #     sys.stdout = f  # Change the standard output to the file we created.
+        #     print(self.hitCounts)
+        #     sys.stdout = original_stdout  # Reset the standard output to its original value
+        pass
 
         
     def getInformation(self, frameData, isControl):
@@ -82,7 +86,7 @@ class testAI1(object):
         if hit > self.max:
             self.max = hit
         elif (hit < self.max) and hit == 0:
-            print(self.max)
+            #print(self.max)
             self.hitCounts.append(self.max)
 
             self.max = 0
