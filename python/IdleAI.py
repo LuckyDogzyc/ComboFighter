@@ -5,19 +5,15 @@ class IdleAI(object):
     def __init__(self, gateway):
         self.gateway = gateway
 
-        self.records = []
+        self.records = ""
+        self.recordList = []
+        self.popSize = 10
         
     def close(self):
         #Record the stuns
-        #print(self.records)
+        pass
 
-        original_stdout = sys.stdout  # Save a reference to the original standard output
 
-        with open('Outputs\\records.txt', 'w') as f:
-            sys.stdout = f  # Change the standard output to the file we created.
-            print(str(self.records))
-            sys.stdout = original_stdout  # Reset the standard output to its original value
-        
     def getInformation(self, frameData, isControl):
         # Getting the frame data of the current frame
         self.frameData = frameData
@@ -25,9 +21,29 @@ class IdleAI(object):
         self.cc.setFrameData(self.frameData, self.player)
     # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
-    	print(x)
-    	print(y)
-    	print(z)
+    	# print(x)
+    	# print(y)
+    	# print(z)
+
+        #print("Round", self.currentRoundNum, "finished")
+
+        self.recordList.append(self.records)
+        self.records = ""
+
+        if (self.currentRoundNum % self.popSize == 0):  # when loop finished
+            #Write in a new file
+            print("Create")
+            file2 = open("Outputs\\records.txt", 'w')
+            for line in self.recordList:
+                file2.writelines(line+"\n")
+                #print("len : ",len(line))
+            file2.close()
+            self.recordList = []
+
+
+
+
+        pass
     	
     # please define this method when you use FightingICE version 4.00 or later
     def getScreenData(self, sd):
@@ -54,16 +70,23 @@ class IdleAI(object):
         if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
                 self.isGameJustStarted = True
                 return
-                
+        if not self.isGameJustStarted:
+            pass
+        else:
+            # this "else" is going to be called in the first frame in the round
+            self.isGameJustStarted = False
+            self.currentRoundNum = self.frameData.getRound()
+            #print("Round:", self.currentRoundNum)
+        #
         if self.cc.getSkillFlag():
                 self.inputKey = self.cc.getSkillKey()
                 return
 
         if not self.isControl:
             #print(1)
-            self.records.append("1")
+            self.records += "1"
         else:
-            self.records.append(0)
+            self.records += "0"
 
             
         self.inputKey.empty()
