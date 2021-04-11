@@ -5,10 +5,15 @@ run arguments:
 --py4j --mute -f 1014 -r 20 --fastmode --disable-window
 
 --py4j: run the FightingICE in python mode
+
 --mute: play the game without sound
+
 -f [number]: set the frame for each round. The first move starts in the 14th frame. ex: If there are 1000 actions, you need 1014 frame to perform all actions.
+
 -r [number]: set the round number. The genetic algorithm have size of population X. If we want Y iterations, we need set the number to X*Y
+
 --fastmode: make the game run above 60fps.
+
 --disable-window: play the game without window.
 
 
