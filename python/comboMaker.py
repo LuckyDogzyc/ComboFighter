@@ -113,7 +113,7 @@ if __name__ == '__main__':
     #print('\n')
 
     #print('Sorting the data\n')
-    # Sort the actionlists by heuristic (low to high)
+    # Sort the actionlists by heuristic (high to low)
     heuristics, combos = merge(heuristics, combos)
 
     #print('Calculating the probabilities')
