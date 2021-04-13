@@ -37,10 +37,10 @@ def merge(mergeArray, popArray):
         # print('length of merge1 is ', int(len(merge1)))
         # print('length of merge2 is ', int(len(merge2)))
 
-        # Sort from lowest heuristic to highest until one array runs out
+        # Sort from highest heuristic to lowest until one array runs out
         i = j = k = 0
         while i < int(len(merge1)) and j < int(len(merge2)):
-            if merge1[i] < merge2[j]:
+            if merge1[i] > merge2[j]:
                 mergeArray[k] = merge1[i]
                 popArray[k] = pop1[i]
                 i += 1
@@ -158,10 +158,10 @@ if __name__ == '__main__':
 
     #print('adding the best of the last combos to the new list')
     # Add the best half of the old combos to the list
-    childSize = len(newComboList)
+    #childSize = len(newComboList)
     #print(childSize)
     for i in range(len(combos) - len(newComboList)):
-        newComboList.append(combos[i+childSize])
+        newComboList.append(combos[i])
         #print(i+childSize)
 
 
