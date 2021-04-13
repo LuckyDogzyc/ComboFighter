@@ -24,3 +24,6 @@ Setup guide:
 4. Open a cmd and find the location of the python folder.
 5. use command: python generator.py    ##this line generate the initial values for the actions
 6. use command: python test2_start_up.py 
+
+Customize:
+Population size: If you want to change the population size of the genetic algorithm. Change the self.popSize and popSize parameters in GeneticAI, IdleAI, and generator.py. You also need to set the run arguments -r to the new X
