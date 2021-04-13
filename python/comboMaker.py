@@ -67,8 +67,8 @@ def merge(mergeArray, popArray):
 
 
 ######################## Main ###########################
-def comboMaker():
-    print('Getting the files\n')
+if __name__ == '__main__':
+    #print('Getting the files\n')
     # recieve the input and output to work with
     with open('Inputs\\actions.txt', 'r') as input:
         combos = input.read().splitlines(True)
@@ -76,27 +76,40 @@ def comboMaker():
     with open('Outputs\\records.txt', 'r') as output:
         results = output.read().splitlines(True)
 
+    print("comboLines:", len(combos))
+    print("resultLines:", len(results))
+    print("comboNum:", len(combos[0]))
+    #print("comboNum:",len(combos[-1]))
+    print("resultNum:",len(results[0]))
+    #print("resultNum:",len(results[-1]))
+
 
     for i in range(len(combos)):
         combos[i] = combos[i].strip('\n')
         results[i] = results[i].strip('\n')
 
-    # print(len(combos[0]))
-    # print(len(combos[-1]))
-    # print(len(results[0]))
-    # print(len(results[-1]))
+
     #print(combos)
 
     #print('Calculating the heuristics')
     # Gather the heuristics for each combo
     heuristics = [0 for i in range(len(results))]
     for i in range(len(results)):
+        maxCombo = 0
+        count = 0
         for j in range(len(results[i])):
             if results[i][j] == '1':
-                heuristics[i] += 1
+                count += 1
+                if(count > maxCombo):
+                    maxCombo = count
+                    heuristics[i] = maxCombo
             else:
-                heuristics[i] = 0
+                count = 0
+
         #print('heuristic for ', i, ' is ', heuristics[i])
+    for i in range(len(heuristics)):
+        if heuristics[i] == max(heuristics):
+            print('Highest heuristic for ', i, ' is ', heuristics[i])
     #print('\n')
 
     #print('Sorting the data\n')
@@ -104,6 +117,8 @@ def comboMaker():
     heuristics, combos = merge(heuristics, combos)
 
     #print('Calculating the probabilities')
+    #print("Heur:", heuristics)
+
     # make probabilites of heuristic
     totalH = 0
     for i in range(len(heuristics)):
@@ -113,6 +128,8 @@ def comboMaker():
     for i in range(len(heuristics)):
         probPop.append(heuristics[i] / totalH)
 
+    print("ProbPop: ",probPop)
+
     #print('Generating new combos')
     newComboList = []
     # Make half population size of children
@@ -120,6 +137,7 @@ def comboMaker():
         #print('Building Child')
         # select parents based on percentage chance
         parents = numpy.random.choice(combos, 2, p=probPop)
+        #print("parent:",parents)
 
         # make 50/50 chance to get action from each parent
         child = []
@@ -140,8 +158,12 @@ def comboMaker():
 
     #print('adding the best of the last combos to the new list')
     # Add the best half of the old combos to the list
+    childSize = len(newComboList)
+    #print(childSize)
     for i in range(len(combos) - len(newComboList)):
-        newComboList.append(combos[i])
+        newComboList.append(combos[i+childSize])
+        #print(i+childSize)
+
 
     print('writing new list to a text file')
     # write the new combos to a file
@@ -156,5 +178,3 @@ def comboMaker():
 
         for i in range(len(finalStrings)):
             print(finalStrings[i])
-
-    print("DONE")

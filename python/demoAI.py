@@ -1,51 +1,46 @@
 import sys
 from py4j.java_gateway import get_field
-import os
 
-class IdleAI(object):
+class demoAI(object):
     def __init__(self, gateway):
         self.gateway = gateway
 
-        self.records = ""
-        self.recordList = []
-        self.popSize = 10
+        #init Actions
+        self.actions = ""
+
+        # Using readlines()
+        with open("Inputs\\demo.txt") as fin:
+            data = fin.read().splitlines(True)
+            self.actions = data[0].strip('\n')
+
+        print(self.actions[0:10])
+
+        #init hit counts
+        self.hitCounts = []
+        self.max = 0
         
     def close(self):
-        #Record the stuns
+        # writing to file
+        print("hit count: ", self.hitCounts)
+        #
+        # original_stdout = sys.stdout  # Save a reference to the original standard output
+        #
+        # with open('Outputs\\hits.txt', 'w') as f:
+        #     sys.stdout = f  # Change the standard output to the file we created.
+        #     print(self.hitCounts)
+        #     sys.stdout = original_stdout  # Reset the standard output to its original value
         pass
 
-
+        
     def getInformation(self, frameData, isControl):
         # Getting the frame data of the current frame
         self.frameData = frameData
-        self.isControl = isControl
         self.cc.setFrameData(self.frameData, self.player)
     # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
     	# print(x)
     	# print(y)
     	# print(z)
-
-        #print("Round", self.currentRoundNum, "finished")
-
-        self.recordList.append(self.records)
-        self.records = ""
-
-        if (self.currentRoundNum % self.popSize == 0):  # when loop finished
-            #Write in a new file
-            print("Create")
-            file2 = open("Outputs\\records.txt", 'w')
-            for line in self.recordList:
-                file2.writelines(line+"\n")
-                #print("len : ",len(line))
-            file2.close()
-            self.recordList = []
-
-            # Generate genetic
-            os.system('python comboMaker.py')
-            print("Updated")
-
-
         pass
     	
     # please define this method when you use FightingICE version 4.00 or later
@@ -73,30 +68,35 @@ class IdleAI(object):
         if self.frameData.getEmptyFlag() or self.frameData.getRemainingFramesNumber() <= 0:
                 self.isGameJustStarted = True
                 return
-        if not self.isGameJustStarted:
-            pass
-        else:
-            # this "else" is going to be called in the first frame in the round
-            self.isGameJustStarted = False
-            self.currentRoundNum = self.frameData.getRound()
-            #print("Round:", self.currentRoundNum)
-        #
+                
         if self.cc.getSkillFlag():
                 self.inputKey = self.cc.getSkillKey()
                 return
-
-        if not self.isControl:
-            #print(1)
-            self.records += "1"
-        else:
-            self.records += "0"
-
             
         self.inputKey.empty()
-        self.cc.skillCancel()     
+        self.cc.skillCancel()
 
-        # Just spam kick
-        #self.cc.commandCall("B")
+        #get combo
+        hit = self.frameData.getCharacter(self.player).getHitCount()
+        #print(hit)
+
+        #Record hits to output
+        if hit > self.max:
+            self.max = hit
+        elif (hit < self.max) and hit == 0:
+            #print(self.max)
+            self.hitCounts.append(self.max)
+
+            self.max = 0
+
+        #Action List
+        if len(self.actions) > 0:
+            #print(self.actions[0])
+            self.cc.commandCall(self.actions[0])
+            self.actions = self.actions[1:]
+
+
+
                         
     # This part is mandatory
     class Java:
