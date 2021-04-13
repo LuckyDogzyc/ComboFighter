@@ -94,6 +94,8 @@ def comboMaker():
         for j in range(len(results[i])):
             if results[i][j] == '1':
                 heuristics[i] += 1
+            else:
+                heuristics[i] = 0
         #print('heuristic for ', i, ' is ', heuristics[i])
     #print('\n')
 
