@@ -27,3 +27,5 @@ Setup guide:
 
 Customize:
 Population size: If you want to change the population size of the genetic algorithm. Change the self.popSize and popSize parameters in GeneticAI, IdleAI, and generator.py. You also need to set the run arguments -r to the new X
+
+Action Length: To change the number of actions, change the seqLen = F to the value you want. And set the run arguments -f to F + 14
