@@ -20,7 +20,7 @@ def start_game():
     manager.registerAI("GeneticAI", GeneticAI(gateway))
     manager.registerAI("IdleAI", IdleAI(gateway))
 
-    game = manager.createGame("ZEN", "ZEN", "GeneticAI", "IdleAI", GAME_NUM)
+    game = manager.createGame("ZEN", "ZEN", "IdleAI", "GeneticAI",GAME_NUM)
     manager.runGame(game)
 
     print("After game")

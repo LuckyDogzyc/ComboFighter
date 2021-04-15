@@ -8,7 +8,7 @@ class GeneticAI(object):
         self.gateway = gateway
 
         #init Params
-        self.popSize = 10
+        self.popSize = 50
 
         # init Actions
         self.actions = ""
@@ -19,7 +19,7 @@ class GeneticAI(object):
             data = fin.read().splitlines(True)
             self.actions = data[0]
             self.records.append(self.actions)
-            print(self.actions[:10])
+            print(self.actions[25:35])
         # for rec in self.records:
         #     print(rec[0:5])
 
@@ -28,15 +28,6 @@ class GeneticAI(object):
         self.max = 0
 
     def close(self):
-        #Write output log for reinforcement learning agent
-        #print("hit count: ", self.hitCounts)
-        ## writing to file
-        # original_stdout = sys.stdout  # Save a reference to the original standard output
-        #
-        # with open('Outputs\\hits.txt', 'w') as f:
-        #     sys.stdout = f  # Change the standard output to the file we created.
-        #     print(self.hitCounts)
-        #     sys.stdout = original_stdout  # Reset the standard output to its original value
         pass
 
     def getInformation(self, frameData, isControl):
@@ -46,12 +37,12 @@ class GeneticAI(object):
 
         # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
-
-        #print(x)
-        print(-y)
+        #print("endGeneticAI1")
+        print(-x)
+        #print(-y)
         #print(z)
 
-
+        #Read new actions
         if(self.currentRoundNum % self.popSize != 0): #when loop size smaller than popSize
             # Using readlines()
             with open("Inputs\\actions.txt") as fin:
@@ -59,27 +50,9 @@ class GeneticAI(object):
                 self.actions = data[(self.currentRoundNum % self.popSize)]
                 self.records.append(self.actions)
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[:10])
+                print(self.actions[25:35])
 
         else: #for each loop finished
-
-            # # Generate genetic
-            # os.system('python comboMaker.py')
-            # print("Updated")
-
-
-            # #Write new actions
-            # # print("Done")
-            # # for rec in self.records:
-            # #     print(rec[0:5])
-            # # print("reset")
-            # # writing to file
-            # file2 = open("Inputs\\actions.txt", 'w')
-            # for line in self.records:
-            #     file2.writelines(line)
-            # file2.close()
-
-
 
             #Reset records
             self.records = []
@@ -91,10 +64,10 @@ class GeneticAI(object):
                 self.actions = data[(self.currentRoundNum % self.popSize)]
                 self.records.append(self.actions)
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[:10])
+                print(self.actions[25:35])
         # for rec in self.records:
         #     print(rec[0:5])
-
+        #print("endGeneticAI2")
         pass
 
     # please define this method when you use FightingICE version 4.00 or later
@@ -110,6 +83,7 @@ class GeneticAI(object):
         self.player = player
         self.gameData = gameData
         self.simulator = self.gameData.getSimulator()
+        #print("startGeneticAI")
 
         return 0
 

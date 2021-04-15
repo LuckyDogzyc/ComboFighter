@@ -8,7 +8,7 @@ class IdleAI(object):
 
         self.records = ""
         self.recordList = []
-        self.popSize = 10
+        self.popSize = 50
         
     def close(self):
         #Record the stuns
@@ -22,6 +22,7 @@ class IdleAI(object):
         self.cc.setFrameData(self.frameData, self.player)
     # please define this method when you use FightingICE version 3.20 or later
     def roundEnd(self, x, y, z):
+        #print("endIdleAI1")
     	# print(x)
     	# print(y)
     	# print(z)
@@ -42,10 +43,10 @@ class IdleAI(object):
             self.recordList = []
 
             # Generate genetic
-            os.system('python comboMaker.py')
+            os.system('python comboMaker2.py')
             print("Updated")
 
-
+        #print("endIdleAI2")
         pass
     	
     # please define this method when you use FightingICE version 4.00 or later
