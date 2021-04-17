@@ -316,25 +316,25 @@ def makeNewComboList(children, combos):
 #  strings and overwrites actions.txt with new combos
 ###########################################################
 def newActionsList(combos):
+    finalStrings = []
+    # add prev move
+    startMovetime = 25
+
+    for i in range(len(combos)):
+        finalString = ""
+        for x in range(startMovetime - 2):
+            finalString += ("R")
+        for x in range(2):
+            finalString += ("N")
+        for j in range(len(combos[i]) - startMovetime):
+            finalString += combos[i][j + startMovetime]
+        #print(finalString[-5:])
+        finalStrings.append(finalString)
     # write the new combos to a file
-    with open('Inputs\\actions.txt', 'w') as saving:
-        sys.stdout = saving
-        finalStrings = []
-        # add prev move
-        startMovetime = 25
-
-        for i in range(len(combos)):
-            finalString = ""
-            for x in range(startMovetime - 2):
-                finalString += ("R")
-            for x in range(2):
-                finalString += ("N")
-            for j in range(len(combos[i]) - startMovetime):
-                finalString += combos[i][j + startMovetime]
-            finalStrings.append(finalString)
-
-        for i in range(len(finalStrings)):
-            print(finalStrings[i])
+    file2 = open("Inputs\\actions.txt", 'w')
+    for line in finalStrings:
+        file2.writelines(line + "\n")
+    file2.close()
 
 ###########################################################
 # recordBestCombos(array, array):
@@ -382,7 +382,7 @@ if __name__ == '__main__':
     children = makeChildren(combos, probPop)
 
     newCombos = makeNewComboList(children, combos)
-
+    #
     # for i in range(len(newCombos)):
     #     print("\nnewcombos:", newCombos[i][25:35])
 

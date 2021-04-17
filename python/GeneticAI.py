@@ -14,12 +14,15 @@ class GeneticAI(object):
         self.actions = ""
         self.records = []
 
+        self.inputLen = 0
+
         # # Using readlines()
         with open("Inputs\\actions.txt") as fin:
             data = fin.read().splitlines(True)
             self.actions = data[0]
             self.records.append(self.actions)
-            print(self.actions[25:35])
+            self.inputLen = len(self.actions)
+            print(self.actions[:35])
         # for rec in self.records:
         #     print(rec[0:5])
 
@@ -49,8 +52,12 @@ class GeneticAI(object):
                 data = fin.read().splitlines(True)
                 self.actions = data[(self.currentRoundNum % self.popSize)]
                 self.records.append(self.actions)
+                #print("inputLen",self.inputLen)
+                if len(self.actions) < self.inputLen:
+                    print("add")
+                    self.actions = "R" + data[(self.currentRoundNum % self.popSize)]
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[25:35])
+                print(self.actions[:35])
 
         else: #for each loop finished
 
@@ -63,8 +70,10 @@ class GeneticAI(object):
                 data = fin.read().splitlines(True)
                 self.actions = data[(self.currentRoundNum % self.popSize)]
                 self.records.append(self.actions)
+                if len(self.actions) < self.inputLen:
+                    self.actions = "R" + data[(self.currentRoundNum % self.popSize)]
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[25:35])
+                print(self.actions[:35])
         # for rec in self.records:
         #     print(rec[0:5])
         #print("endGeneticAI2")

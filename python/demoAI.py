@@ -7,11 +7,13 @@ class demoAI(object):
 
         #init Actions
         self.actions = ""
+        self.save = ""
 
         # Using readlines()
         with open("Inputs\\demo.txt") as fin:
             data = fin.read().splitlines(True)
             self.actions = data[0].strip('\n')
+            self.save = self.actions
 
         print(self.actions[0:10])
 
@@ -41,6 +43,7 @@ class demoAI(object):
     	# print(x)
     	# print(y)
     	# print(z)
+        self.actions = self.save
         pass
     	
     # please define this method when you use FightingICE version 4.00 or later
