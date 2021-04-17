@@ -2,7 +2,7 @@
 This is an python AI for FightingICE.
 
 run arguments:
---py4j --mute -f 814 -r 100 --fastmode --disable-window
+--py4j --mute -f 214 -r 1000 --fastmode --disable-window
 
 --py4j: run the FightingICE in python mode
 
