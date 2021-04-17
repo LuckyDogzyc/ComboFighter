@@ -24,8 +24,8 @@ def generateRandChild(): #init the random commands to control AI
 
 iterations = 0
 startMovetime = 25
-seqLen = 800  # maximum length of the sequences generated = frame number
-popSize = 50  # size of the population to sample from
+seqLen = 200  # maximum length of the sequences generated = frame number
+popSize = 10  # size of the population to sample from
 parentRand = 0.5  # chance to select action from parent 1 (50/50)
 mutRand = 0.3  # chance to mutate offspring action
 

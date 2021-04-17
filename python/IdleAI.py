@@ -8,7 +8,7 @@ class IdleAI(object):
 
         self.records = ""
         self.recordList = []
-        self.popSize = 50
+        self.popSize = 10
         
     def close(self):
         #Record the stuns

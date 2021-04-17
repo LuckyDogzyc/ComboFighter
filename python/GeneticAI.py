@@ -8,7 +8,7 @@ class GeneticAI(object):
         self.gateway = gateway
 
         #init Params
-        self.popSize = 50
+        self.popSize = 10
 
         # init Actions
         self.actions = ""
@@ -105,6 +105,7 @@ class GeneticAI(object):
             #print("Round:", self.currentRoundNum)
 
 
+
         if self.cc.getSkillFlag():
             self.inputKey = self.cc.getSkillKey()
             return
@@ -127,14 +128,14 @@ class GeneticAI(object):
             self.max = 0
 
         # Action List
-        if len(self.actions) > 0:
+        if len(self.actions) > 0 and self.frameData.getFramesNumber() > 1:
             # print(self.actions[0])
             if(self.actions[0] == "N"): #no moves
                 pass
             else:
+                #print(self.frameData.getFramesNumber(),self.actions[0])
                 self.cc.commandCall(self.actions[0])
             self.actions = self.actions[1:]
-        #self.cc.commandCall("A")
 
     # This part is mandatory
     class Java:

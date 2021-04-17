@@ -135,9 +135,11 @@ def getHeuristic(records):
 
         # Calculate Heuristic
         try:
-            lheur = left/((1+lSpace)^2)
-            rheur = right/((1+rSpace)^2)
-            heuristic = int(lheur+rheur+biggest)
+            div = 2.7
+            lheur = (left/div)/((1+lSpace)**2)
+            rheur = (right/div)/((1+rSpace)**2)
+            heuristic = int(lheur+rheur+biggest/div)
+            #print(heuristic)
         except:
             print("heuristic is", heuristic, "\nlheur is ", lheur, "\nrheur is ", rheur,
                   "\nbiggest is ", biggest, "\nleft is ", left, "\nleft space is ",
@@ -215,20 +217,38 @@ def mergeSort(combos, heuristics):
 #  the probabilities that each combo will be a parent of
 #  the new children
 ###########################################################
+# def getProbabilities(heuristics):
+#     # Calculate the total amount of heuristics
+#     total = 0
+#     for i in range(len(heuristics)):
+#         total += heuristics[i]
+#
+#     # Make an array for the new proabilites
+#     probPop = [0 for i in range(len(heuristics))]
+#
+#     # Add the probabilites to the new array
+#     for i in range(len(heuristics)):
+#         probPop[i] = heuristics[i] / total
+#
+#     # Return the array
+#     return probPop
+
 def getProbabilities(heuristics):
     # Calculate the total amount of heuristics
     total = 0
-    for i in range(len(heuristics)):
+    sub = 1
+    for i in range(int(len(heuristics)/sub)):
         total += heuristics[i]
 
     # Make an array for the new proabilites
     probPop = [0 for i in range(len(heuristics))]
 
     # Add the probabilites to the new array
-    for i in range(len(heuristics)):
+    for i in range(int(len(heuristics)/sub)):
         probPop[i] = heuristics[i] / total
 
     # Return the array
+    #print(probPop)
     return probPop
 
 
@@ -296,20 +316,23 @@ def makeNewComboList(children, combos):
 #  strings and overwrites actions.txt with new combos
 ###########################################################
 def newActionsList(combos):
-    with open("Inputs\\actions.txt", 'w') as save:
-        # Set to writing a print statement to the actions.txt
-        # file
-        sys.stdout = save
-
-        # Turn the arrays of characters into strings
+    # write the new combos to a file
+    with open('Inputs\\actions.txt', 'w') as saving:
+        sys.stdout = saving
         finalStrings = []
-        for i in range(len(combos)):
-            string = ""
-            for j in range(len(combos[i])):
-                string += combos[i][j]
-            finalStrings.append(string)
+        # add prev move
+        startMovetime = 25
 
-        # Print the new strings to actions.txt
+        for i in range(len(combos)):
+            finalString = ""
+            for x in range(startMovetime - 2):
+                finalString += ("R")
+            for x in range(2):
+                finalString += ("N")
+            for j in range(len(combos[i]) - startMovetime):
+                finalString += combos[i][j + startMovetime]
+            finalStrings.append(finalString)
+
         for i in range(len(finalStrings)):
             print(finalStrings[i])
 
@@ -325,6 +348,10 @@ def recordBestCombos(combos, heuristics):
     file2.writelines(str(heuristics[0]) + "," + combos[0] + "\n")
     file2.close()
 
+    file3 = open("Outputs\\comboRecorder.txt", 'a')
+    for i in range(5):
+        file3.writelines(str(heuristics[i]) + "," + combos[i] + "\n")
+    file3.close()
 
 
 
@@ -338,9 +365,15 @@ if __name__ == '__main__':
 
     heuristics = getHeuristic(records)
 
+    # for i in range(len(combos)):
+    #     print("heur:", heuristics[i],"\ncombos:", combos[i][25:35])
+
     combos, heuristics = mergeSort(combos, heuristics)
 
     print(heuristics)
+
+    # for i in range(len(combos)):
+    #     print("heur:", heuristics[i],"\ncombos:", combos[i][25:35])
 
     recordBestCombos(combos, heuristics)
 
@@ -349,5 +382,8 @@ if __name__ == '__main__':
     children = makeChildren(combos, probPop)
 
     newCombos = makeNewComboList(children, combos)
+
+    # for i in range(len(newCombos)):
+    #     print("\nnewcombos:", newCombos[i][25:35])
 
     newActionsList(newCombos)
