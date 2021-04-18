@@ -22,7 +22,7 @@ class GeneticAI(object):
             self.actions = data[0]
             self.records.append(self.actions)
             self.inputLen = len(self.actions)
-            print(self.actions[:35])
+            print(self.actions[25:35])
         # for rec in self.records:
         #     print(rec[0:5])
 
@@ -57,7 +57,7 @@ class GeneticAI(object):
                     print("add")
                     self.actions = "R" + data[(self.currentRoundNum % self.popSize)]
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[:35])
+                print(self.actions[25:35])
 
         else: #for each loop finished
 
@@ -73,7 +73,7 @@ class GeneticAI(object):
                 if len(self.actions) < self.inputLen:
                     self.actions = "R" + data[(self.currentRoundNum % self.popSize)]
                 print("Round", self.currentRoundNum, "finished")
-                print(self.actions[:35])
+                print(self.actions[25:35])
         # for rec in self.records:
         #     print(rec[0:5])
         #print("endGeneticAI2")
@@ -137,9 +137,10 @@ class GeneticAI(object):
             self.max = 0
 
         # Action List
-        if len(self.actions) > 0 and self.frameData.getFramesNumber() > 1:
+        if len(self.actions) > 0 and self.frameData.getFramesNumber() > 1 and self.frameData.getRemainingFramesNumber() > 16:
             # print(self.actions[0])
             if(self.actions[0] == "N"): #no moves
+                #print(self.frameData.getFramesNumber(), self.actions[0])
                 pass
             else:
                 #print(self.frameData.getFramesNumber(),self.actions[0])
