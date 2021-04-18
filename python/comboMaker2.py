@@ -53,9 +53,15 @@ def getHeuristic(records):
         isBiggest = False
         count = 0
 
+        countHit = 0
+
+        isConnect = False
+
         # Find the biggest string of '1's
         for j in range(len(records[i])):
             if records[i][j] == '1':
+                countHit += 1
+                isConnect = True
                 # If starting a new line of '1's
                 # remember the beginning
                 if tempBegin == True:
@@ -73,13 +79,21 @@ def getHeuristic(records):
 
 
             else:
-                count = 0
-                tempBegin = True
+                if isConnect:
+                    isConnect = False
+                    count += 1
+                else:
 
-                # If this was the biggest, remember the end
-                if isBiggest == True:
-                    isBiggest = False
-                    biggestEnd = j - 1
+                    count = 0
+                    tempBegin = True
+
+                    # If this was the biggest, remember the end
+                    if isBiggest == True:
+                        isBiggest = False
+                        biggestEnd = j - 1
+
+
+
 
         # If the last character was part of the biggest string
         # make sure biggestEnd is set
@@ -135,10 +149,12 @@ def getHeuristic(records):
 
         # Calculate Heuristic
         try:
-            div = 2.7
+            div = 1
             lheur = (left/div)/((1+lSpace)**2)
             rheur = (right/div)/((1+rSpace)**2)
-            heuristic = int(lheur+rheur+biggest/div)
+            #print(int(lheur+rheur+biggest/div))
+            heuristic = lheur+rheur+biggest/div
+                        #+ int(countHit/(div*10))
             #print(heuristic)
         except:
             print("heuristic is", heuristic, "\nlheur is ", lheur, "\nrheur is ", rheur,

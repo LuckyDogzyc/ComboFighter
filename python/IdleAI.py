@@ -96,8 +96,9 @@ class IdleAI(object):
         self.inputKey.empty()
         self.cc.skillCancel()     
 
-        # Just spam kick
-        #self.cc.commandCall("B")
+        # # Just spam kick
+        # if self.frameData.getFramesNumber() > 65 and self.frameData.getRemainingFramesNumber() > 16 :
+        #     self.cc.commandCall("B")
                         
     # This part is mandatory
     class Java:
