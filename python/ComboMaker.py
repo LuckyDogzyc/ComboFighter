@@ -24,7 +24,7 @@ class ComboMaker(object):
 #                   # Variables #
 # self.combos will store a multidimensional dictionary of
 #  combo strings. 
-# self.vFit will store a multidimensional dictionary of
+# self.combos['vFit'] will store a multidimensional dictionary of
 #  fitness values for combo strings in the same position in
 #  self.combos.
 # self.inputs holds an array of characters representing
@@ -40,8 +40,9 @@ class ComboMaker(object):
         #The dictionaries that the combo strings and their fitness values will be stored in
         if flag == True:
             self.combos = {}
-            self.vFit = {}
-            self.old = {}
+            self.combos['stored'] = {}
+            self.combos['vFit'] = {}
+            self.combos['old'] = {}
 
         
             #The inputs and their probabilites
@@ -59,27 +60,23 @@ class ComboMaker(object):
             
             #Create the multidimensional dictionaries holding the combo strings
             for i in xdist:
-                self.combos[str(i)] = {}
-                self.vFit[str(i)] = {}
-                self.old[str(i)] = {}
+                self.combos['stored'][str(i)] = {}
+                self.combos['vFit'][str(i)] = {}
+                self.combos['old'][str(i)] = {}
                 
                 for j in ydist:
-                    self.combos[str(i)][str(j)] = {}
-                    self.vFit[str(i)][str(j)] = {}
-                    self.old[str(i)][str(j)] = {}
+                    self.combos['stored'][str(i)][str(j)] = {}
+                    self.combos['vFit'][str(i)][str(j)] = {}
+                    self.combos['old'][str(i)][str(j)] = {}
                     
                     for k in energy:
-                        self.combos[str(i)][str(j)][str(k)] = self.makeCombo()
-                        self.vFit[str(i)][str(j)][str(k)] = 0
-                        self.old[str(i)][str(j)][str(k)] = ""
+                        self.combos['stored'][str(i)][str(j)][str(k)] = self.makeCombo()
+                        self.combos['vFit'][str(i)][str(j)][str(k)] = 0
+                        self.combos['old'][str(i)][str(j)][str(k)] = ""
                     
         else:
-            with open("testCombo.json", 'r') as file:
+            with open("testCombos.json", 'r') as file:
                 self.combos = json.load(file)
-            with open("testFitness.json", 'r') as file2:
-                self.vFit = json.load(file2)
-            with open("testOld.json", 'r') as file3:
-                self.old = json.load(file3)
         
 ###################### Mutate ###############################
 # This method takes a combo string and a boolean value and

@@ -56,13 +56,13 @@ class testAI2(object):
                     fitness = self.cm.calcFitness(newRecord)
                     
                     #Set the best combo as the saved one
-                    if self.cm.old[type[0]][type[1]][type[2]]:
-                        if self.cm.vFit[type[0]][type[1]][type[2]] < fitness:
-                            self.cm.vFit[type[0]][type[1]][type[2]] = fitness
-                            self.cm.old[type[0]][type[1]][type[2]] = self.cm.combos[type[0]][type[1]][type[2]]
+                    if self.cm.combos['old'][type[0]][type[1]][type[2]]:
+                        if self.cm.combos['vFit'][type[0]][type[1]][type[2]] < fitness:
+                            self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
+                            self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
                     else:
-                        self.cm.vFit[type[0]][type[1]][type[2]] = fitness
-                        self.cm.old[type[0]][type[1]][type[2]] = self.cm.combos[type[0]][type[1]][type[2]]
+                        self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
+                        self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
                     
                     #Determine the probabilities to use
                     if type[0] == 'far':
@@ -71,15 +71,11 @@ class testAI2(object):
                         flag = True
                     
                     #Generate the Child
-                    self.cm.combos[type[0]][type[1]][type[2]] = self.cm.mutate(self.cm.old[type[0]][type[1]][type[2]], flag)
+                    self.cm.combos['stored'][type[0]][type[1]][type[2]] = self.cm.mutate(self.cm.combos['old'][type[0]][type[1]][type[2]], flag)
 
         print('first')
-        with open("testCombo.json", 'w') as file:
+        with open("testCombos.json", 'w') as file:
             json.dump(self.cm.combos, file)
-        with open("testFitness.json", 'w') as file:
-            json.dump(self.cm.fitness, file)
-        with open("testOld.json", 'w') as file:
-            json.dump(self.cm.old, file)
         print('second')
         pass
     
@@ -156,7 +152,7 @@ class testAI2(object):
             self.type[str(self.currentRoundNum)].append(str(xdist + ":" + ydist + ":" + energy))
             
             #Set list of actions
-            self.actions = self.cm.combos[xdist][ydist][energy]
+            self.actions = self.cm.combos['stored'][xdist][ydist][energy]
         
         # Execute the next input in the combo string
         if(self.actions[0] == "N"): # 'do nothing' action
