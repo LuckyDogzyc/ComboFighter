@@ -3,7 +3,6 @@ from py4j.java_gateway import get_field
 import os
 from ComboMaker import ComboMaker
 import json
-import threading
 import time
 
 
@@ -11,13 +10,12 @@ class testAI2(object):
 ################### init ########################
     def __init__(self, gateway):
         self.gateway = gateway
-        self.sem = threading.Semaphore()
 
         #init Params
-        self.popSize = 1
+        self.popSize = 10
 
         # init Actions
-        self.actions = ""
+        self.actions = []
         self.records = {}
         self.ends = {}
         self.type = {}
@@ -36,47 +34,8 @@ class testAI2(object):
 
 ##################### close #####################
     def close(self):
-        with open("Outputs\\records.txt", 'r') as file:
-            data = file.read().splitlines(True)
-            
-            #iterate through each line in records.txt
-            for i in range(len(data)):
-                #iterate through each completed combo
-                for j in range(len(self.ends[str(i+1)])):
-                    #Store the beginning and end of the combo, and the combo used
-                    beginning = self.records[str(i+1)][j]
-                    ending = self.ends[str(i+1)][j]
-                    type = self.type[str(i+1)][j].split(":")
-                    
-                    
-                    #Get the segment of records.txt for this combo
-                    newRecord = data[i][beginning:ending]
-                    
-                    #Calculate fitness
-                    fitness = self.cm.calcFitness(newRecord)
-                    
-                    #Set the best combo as the saved one
-                    if self.cm.combos['old'][type[0]][type[1]][type[2]]:
-                        if self.cm.combos['vFit'][type[0]][type[1]][type[2]] < fitness:
-                            self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
-                            self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
-                    else:
-                        self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
-                        self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
-                    
-                    #Determine the probabilities to use
-                    if type[0] == 'far':
-                        flag = False
-                    else:
-                        flag = True
-                    
-                    #Generate the Child
-                    self.cm.combos['stored'][type[0]][type[1]][type[2]] = self.cm.mutate(self.cm.combos['old'][type[0]][type[1]][type[2]], flag)
-
-        print('first')
         with open("testCombos.json", 'w') as file:
             json.dump(self.cm.combos, file)
-        print('second')
         pass
     
 ####################### processing ##################
@@ -102,9 +61,8 @@ class testAI2(object):
             return
 
 
-        #empty the input and cancel any skill that can be cancelled right now
+        #empty the input
         self.inputKey.empty()
-        self.cc.skillCancel()
         
 
         #if there is no combo string currently, get a combo string
@@ -178,8 +136,50 @@ class testAI2(object):
         #print(x)
         print(-y)
         #print(z)
-        print("Round End\n")
+        print("\nRound End")
                         
+        with open("Outputs\\records.txt", 'r') as file:
+            data = file.read().splitlines(True)
+            
+            print("Calculating")
+            #iterate through each line in records.txt
+            for i in range(len(data)):
+                #iterate through each completed combo
+                for j in range(len(self.ends[str(i+1)])):
+                    #Store the beginning and end of the combo, and the combo used
+                    beginning = self.records[str(i+1)][j]
+                    ending = self.ends[str(i+1)][j]
+                    type = self.type[str(i+1)][j].split(":")
+                    
+                    
+                    #Get the segment of records.txt for this combo
+                    newRecord = data[i][beginning:ending]
+                    
+                    #Calculate fitness
+                    fitness = self.cm.calcFitness(newRecord)
+                    
+                    #Set the best combo as the saved one
+                    if self.cm.combos['old'][type[0]][type[1]][type[2]]:
+                        if self.cm.combos['vFit'][type[0]][type[1]][type[2]] < fitness:
+                            self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
+                            self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
+                    else:
+                        self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
+                        self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
+                    
+                    #Determine the probabilities to use
+                    if type[0] == 'far':
+                        flag = False
+                    else:
+                        flag = True
+                    
+                    #Generate the Child
+                    self.cm.combos['stored'][type[0]][type[1]][type[2]] = self.cm.mutate(self.cm.combos['old'][type[0]][type[1]][type[2]], flag)
+
+        if self.currentRoundNum % self.popSize == 0:
+            print('Storing')
+            with open("testCombos.json", 'w') as file:
+                json.dump(self.cm.combos, file)
 
         pass
 

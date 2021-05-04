@@ -8,9 +8,11 @@ class ComboMaker(object):
 # This method randomly generates a combo string
 #############################################################
     def makeCombo(self):
-        combo = ""
+        #combo = ""
+        combo = []
         for i in range(self.cLength):
-            combo += numpy.random.choice(self.inputs, p=self.close)
+            #combo += numpy.random.choice(self.inputs, p=self.close)
+            combo.append(numpy.random.choice(self.actionNames))
         
         return combo
 
@@ -47,11 +49,13 @@ class ComboMaker(object):
         
             #The inputs and their probabilites
             self.inputs = ['U','D','L','R','A','B','C','N'] #possible inputs
+            self.actionNames = ['BACK_JUMP', 'BACK_STEP', 'CROUCH', 'CROUCH_A', 'CROUCH_B', 'CROUCH_FA', 'CROUCH_FB', 'CROUCH_GUARD', 'DASH', 'DOWN', 'FOR_JUMP', 'FORWARD_WALK', 'JUMP', 'STAND_A', 'STAND_B', 'STAND_D_DB_BA', 'STAND_D_DB_BB', 'STAND_D_DF_FA', 'STAND_D_DF_FB', 'STAND_D_DF_FC', 'STAND_F_D_DFA', 'STAND_F_D_DFB', 'STAND_FA', 'STAND_FB', 'STAND_GUARD', 'THROW_A', 'THROW_B']
+            self.airActionNames = ['AIR_A', 'AIR_B', 'AIR_D_DB_BA', 'AIR_D_DB_BB', 'AIR_D_DF_FA', 'AIR_D_DF_FB', 'AIR_F_D_DFA', 'AIR_F_D_DFB', 'AIR_FA', 'AIR_FB', 'AIR_GUARD', 'AIR_UA', 'AIR_UB']
             self.close = [0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1] #chance of inputs up close
             self.far = [0.2, 0.1, 0.1, 0.2, 0.1, 0.1, 0.1, 0.1] #chance of inputs far away
             
             #The length of the combo strings created/mutated
-            self.cLength = 1000
+            self.cLength = 50
             
             #The keys that will direct to a combo string
             xdist = ['close', 'mid', 'far']
@@ -86,7 +90,8 @@ class ComboMaker(object):
 # are used
 ############################################################
     def mutate(self, parent, flag):
-        child = ""
+        #child = ""
+        child = []
         
         if flag == True:
             iList = self.close
@@ -96,9 +101,11 @@ class ComboMaker(object):
         for i in range(len(parent)):
             r = random.random()
             if r < 0.1:
-                child += numpy.random.choice(self.inputs, p=iList)
+                #combo += numpy.random.choice(self.inputs, p=self.close)
+                child.append(numpy.random.choice(self.actionNames))
             else:
-                child += parent[i]
+                #child += parent[i]
+                child.append(parent[i])
         
         return child
 
@@ -123,6 +130,7 @@ class ComboMaker(object):
         biggestEnd = 0
         isBiggest = False
         count = 0
+        numOnes = 0
 
         countHit = 0
 
@@ -131,6 +139,7 @@ class ComboMaker(object):
         # Find the biggest string of '1's
         for j in range(len(record)):
             if record[j] == '1':
+                numOnes += 1
                 countHit += 1
                 isConnect = True
                 # If starting a new line of '1's
@@ -226,4 +235,7 @@ class ComboMaker(object):
         rheur = (right/div)/((1+rSpace)**2)
         fitness = lheur+rheur+biggest/div
         
-        return fitness
+        # Weigh the value of longest stun and total stun time
+        finalFitness = (fitness * 0.7) + (numOnes * 0.3)
+        
+        return finalFitness
