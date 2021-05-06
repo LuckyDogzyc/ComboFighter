@@ -63,6 +63,7 @@ class testAI2(object):
 
         #empty the input
         self.inputKey.empty()
+        self.cc.skillCancel()
         
 
         #if there is no combo string currently, get a combo string
@@ -169,6 +170,8 @@ class testAI2(object):
                     else:
                         self.cm.combos['vFit'][type[0]][type[1]][type[2]] = fitness
                         self.cm.combos['old'][type[0]][type[1]][type[2]] = self.cm.combos['stored'][type[0]][type[1]][type[2]]
+                        
+                    print(self.cm.combos['vFit'][type[0]][type[1]][type[2]])
                     
                     #Determine the probabilities to use
                     if type[0] == 'far':
@@ -179,8 +182,25 @@ class testAI2(object):
                     #Generate the Child
                     self.cm.combos['stored'][type[0]][type[1]][type[2]] = self.cm.mutate(self.cm.combos['old'][type[0]][type[1]][type[2]], flag)
 
+        #Do this every popSize amount of rounds
         if self.currentRoundNum % self.popSize == 0:
-            print('Storing')
+            print('Grabbing Combos')
+            #Store all the stored combo strings and their fitness
+            current = []
+            for i in self.x:
+                for j in self.y:
+                    for k in self.e:
+                        current.append([str(self.cm.combos['vFit'][i][j][k]), self.cm.combos['old'][i][j][k], i, j, k])
+            
+            print('Sorting Combos')
+            #Sort the list 
+            current = self.cm.mergeSort(current)
+            
+            print('Storing top 10 combos of this round')
+            current = current[:10]
+            self.cm.combos['top'][str(self.currentRoundNum)] = current
+            
+            print('Storing to json file')
             with open("testCombos.json", 'w') as file:
                 json.dump(self.cm.combos, file)
 

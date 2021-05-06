@@ -45,6 +45,7 @@ class ComboMaker(object):
             self.combos['stored'] = {}
             self.combos['vFit'] = {}
             self.combos['old'] = {}
+            self.combos['top'] = {}
 
         
             #The inputs and their probabilites
@@ -239,3 +240,42 @@ class ComboMaker(object):
         finalFitness = (fitness * 0.7) + (numOnes * 0.3)
         
         return finalFitness
+
+######################## mergeSort ##########################
+#############################################################
+    def mergeSort(self, array):
+        if len(array) == 1:
+            return array
+        
+        print('split array')
+        mid = int(len(array)/2)
+        a1 = array[:mid]
+        a2 = array[mid:]
+        
+        print('sort halves')
+        m1 = self.mergeSort(a1)
+        m2 = self.mergeSort(a2)
+        
+        print('Sort current array')
+        i = j = k = 0
+        while i < len(m1) and j < len(m2):
+            if float(m1[i][0]) > float(m2[j][0]):
+                array[k] = m1[i]
+                i += 1
+            else:
+                array[k] = m2[j]
+                j += 1
+            k += 1
+        
+        print('Sort final bits')
+        while i < len(m1):
+            array[k] = m1[i]
+            i += 1
+            k += 1
+        while j < len(m2):
+            array[k] = m2[j]
+            j += 1
+            k += 1
+        
+        return array
+        
