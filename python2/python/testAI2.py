@@ -66,7 +66,9 @@ class testAI2(object):
         
 
         #if there is no combo string currently, get a combo string
-        if not self.actions:
+        if len(self.actions) == 0:
+            print('Getting new combo string')
+            
             #Determine the state
             xdist = ""
             ydist = ""
@@ -112,12 +114,13 @@ class testAI2(object):
             #Set list of actions
             self.actions = self.cm.combos['stored'][xdist][ydist][energy]
         
-        # Execute the next input in the combo string
-        if(self.actions[0] == "N"): # 'do nothing' action
-            pass
-        else:
-            self.cc.commandCall(self.actions[0])
-        self.actions = self.actions[1:]
+        if len(self.actions) > 0 and self.frameData.getFramesNumber() > 1 and self.frameData.getRemainingFramesNumber() > 16:
+            # Execute the next input in the combo string
+            if(self.actions[0] == "N"): # 'do nothing' action
+                pass
+            else:
+                self.cc.commandCall(self.actions[0])
+            self.actions = self.actions[1:]
         
         #Store the ending time of the combo string
         if not self.actions:

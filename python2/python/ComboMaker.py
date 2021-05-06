@@ -49,13 +49,13 @@ class ComboMaker(object):
         
             #The inputs and their probabilites
             self.inputs = ['U','D','L','R','A','B','C','N'] #possible inputs
-            self.actionNames = ['BACK_JUMP', 'BACK_STEP', 'CROUCH', 'CROUCH_A', 'CROUCH_B', 'CROUCH_FA', 'CROUCH_FB', 'CROUCH_GUARD', 'DASH', 'DOWN', 'FOR_JUMP', 'FORWARD_WALK', 'JUMP', 'STAND_A', 'STAND_B', 'STAND_D_DB_BA', 'STAND_D_DB_BB', 'STAND_D_DF_FA', 'STAND_D_DF_FB', 'STAND_D_DF_FC', 'STAND_F_D_DFA', 'STAND_F_D_DFB', 'STAND_FA', 'STAND_FB', 'STAND_GUARD', 'THROW_A', 'THROW_B']
+            self.actionNames = ['BACK_JUMP', 'BACK_STEP', 'CROUCH', 'CROUCH_A', 'CROUCH_B', 'CROUCH_FA', 'CROUCH_FB', 'CROUCH_GUARD', 'DASH', 'DOWN', 'FOR_JUMP', 'FORWARD_WALK', 'JUMP', 'STAND_A', 'STAND_B', 'STAND_D_DB_BA', 'STAND_D_DB_BB', 'STAND_D_DF_FA', 'STAND_D_DF_FB', 'STAND_D_DF_FC', 'STAND_F_D_DFA', 'STAND_F_D_DFB', 'STAND_FA', 'STAND_FB', 'STAND_GUARD', 'THROW_A', 'THROW_B', 'N']
             self.airActionNames = ['AIR_A', 'AIR_B', 'AIR_D_DB_BA', 'AIR_D_DB_BB', 'AIR_D_DF_FA', 'AIR_D_DF_FB', 'AIR_F_D_DFA', 'AIR_F_D_DFB', 'AIR_FA', 'AIR_FB', 'AIR_GUARD', 'AIR_UA', 'AIR_UB']
             self.close = [0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1] #chance of inputs up close
             self.far = [0.2, 0.1, 0.1, 0.2, 0.1, 0.1, 0.1, 0.1] #chance of inputs far away
             
             #The length of the combo strings created/mutated
-            self.cLength = 50
+            self.cLength = 500
             
             #The keys that will direct to a combo string
             xdist = ['close', 'mid', 'far']
