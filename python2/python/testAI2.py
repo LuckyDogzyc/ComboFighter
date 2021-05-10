@@ -141,6 +141,8 @@ class testAI2(object):
         print(-y)
         #print(z)
         print("\nRound End")
+        
+        self.actions = []
                         
         with open("Outputs\\records.txt", 'r') as file:
             data = file.read().splitlines(True)
@@ -190,7 +192,7 @@ class testAI2(object):
             for i in self.x:
                 for j in self.y:
                     for k in self.e:
-                        current.append([str(self.cm.combos['vFit'][i][j][k]), self.cm.combos['old'][i][j][k], i, j, k])
+                        current.append([str(self.cm.combos['vFit'][i][j][k]), i, j, k])
             
             print('Sorting Combos')
             #Sort the list 

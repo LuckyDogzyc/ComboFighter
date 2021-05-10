@@ -237,26 +237,28 @@ class ComboMaker(object):
         fitness = lheur+rheur+biggest/div
         
         # Weigh the value of longest stun and total stun time
-        finalFitness = (fitness * 0.7) + (numOnes * 0.3)
+        finalFitness = (fitness * 0.9) + (numOnes * 0.1)
         
         return finalFitness
 
 ######################## mergeSort ##########################
 #############################################################
     def mergeSort(self, array):
+        #If this is a leaf node, return the value
         if len(array) == 1:
             return array
         
-        print('split array')
+        #Find the middle of the array, and split it
         mid = int(len(array)/2)
         a1 = array[:mid]
         a2 = array[mid:]
         
-        print('sort halves')
+        #mergeSort the two halves
         m1 = self.mergeSort(a1)
         m2 = self.mergeSort(a2)
         
-        print('Sort current array')
+        #Sort the two halves until one half has been added
+        # entirely to the array
         i = j = k = 0
         while i < len(m1) and j < len(m2):
             if float(m1[i][0]) > float(m2[j][0]):
@@ -267,7 +269,7 @@ class ComboMaker(object):
                 j += 1
             k += 1
         
-        print('Sort final bits')
+        #Add the rest of the second half
         while i < len(m1):
             array[k] = m1[i]
             i += 1
@@ -277,5 +279,6 @@ class ComboMaker(object):
             j += 1
             k += 1
         
+        #Return the sorted array
         return array
         
